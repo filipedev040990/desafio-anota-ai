@@ -1,23 +1,18 @@
 {
-  "name": "projeto_base",
+  "name": "desafio-anot-ai",
   "version": "1.0.0",
-  "description": "Base para projetos node + typescript",
+  "description": "Desafio técnico backend pleno para empresa anota ai. Desafio para praticar.",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/infra/http/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only --clear -r dotenv/config --inspect=0.0.0.0:9229 src/main",
+    "start": "node dist/infra/main.js",
     "clean": "rimraf dist",
     "build": "npm run clean && tsc -p tsconfig-build.json",
-    "build:up": "clear && npm run build && docker compose down && docker compose up",
-    "prepare": "husky install",
-    "check": "npm-check -s -u",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm t -- --watch",
     "test:staged": "npm t -- --findRelatedTests",
-    "test:coverage": "npm t -- --coverage",
-    "test:integration": "npm t -- --config ./jest.integration.config.js"
+    "test:coverage": "npm t -- --coverage"
   },
   "dependencies": {
     "@types/cors": "^2.8.13",
@@ -33,25 +28,22 @@
     "@types/jest": "^27.5.2",
     "@types/module-alias": "^2.0.1",
     "@types/node": "^16.7.13",
-    "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "eslint": "^7.32.0",
     "eslint-config-standard-with-typescript": "^21.0.1",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "husky": "^8.0.3",
     "jest": "27.1.1",
     "jest-mock-extended": "^2.0.1",
     "lint-staged": "^11.1.2",
     "mockdate": "^3.0.5",
-    "supertest": "^6.1.6",
     "ts-jest": "27.0.5",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.2"
   },
   "engines": {
-    "node": "16.x"
+    "node": "20.x"
   },
   "_moduleAliases": {
     "@": "dist"
