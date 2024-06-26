@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/infra/main.js",
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc -p tsconfig-build.json",
+    "build": "npm run clean && tsc",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest --passWithNoTests --no-cache --runInBand",
