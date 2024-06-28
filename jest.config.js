@@ -14,6 +14,5 @@ module.exports = {
   transform: {
     '\\.ts$': 'ts-jest'
   },
-  clearMocks: true,
-  preset: '@shelf/jest-mongodb'
+  clearMocks: true
 }
