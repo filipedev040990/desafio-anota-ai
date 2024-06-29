@@ -9,16 +9,16 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Owner {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String    @id
   name      String
-  document  String
+  document  String    @unique
   createdAt DateTime
-  updatedAt DateTime
+  updatedAt DateTime?
 
   @@map("owners")
 }

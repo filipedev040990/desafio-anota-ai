@@ -1,19 +1,20 @@
 import { OwnerRepositoryData, OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
-import { mongoConnect } from '../mongodb.helper'
-import { ObjectId } from 'mongodb'
+import { prismaClient } from '../prisma-client'
 
 export class OwnerRepository implements OwnerRepositoryInterface {
   async save (input: OwnerRepositoryData): Promise<OwnerRepositoryData> {
-    const client = await mongoConnect()
-    const collection = client.collection('owner')
-    await collection.insertOne({
-      _id: input.id as unknown as ObjectId,
-      name: input.name,
-      document: input.document,
-      createdAt: input.createdAt,
-      updatedAt: input.updatedAt
+    return await prismaClient.owner.create({
+      data: {
+        id: input.id,
+        name: input.name,
+        document: input.document,
+        createdAt: input.createdAt,
+        updatedAt: null
+      }
     })
+  }
 
-    return input
+  async getByDocument (document: string): Promise<OwnerRepositoryData | null> {
+    return await prismaClient.owner.findFirst({ where: { document } })
   }
 }
