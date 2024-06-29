@@ -1,16 +1,19 @@
 import { OwnerRepositoryData, OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
-import { Collection, Db } from 'mongodb'
+import { mongoConnect } from '../mongodb.helper'
+import { ObjectId } from 'mongodb'
 
-export class OwnerRepository /* implements OwnerRepositoryInterface */ {
-  private readonly collection: Collection
+export class OwnerRepository implements OwnerRepositoryInterface {
+  async save (input: OwnerRepositoryData): Promise<OwnerRepositoryData> {
+    const client = await mongoConnect()
+    const collection = client.collection('owner')
+    await collection.insertOne({
+      _id: input.id as unknown as ObjectId,
+      name: input.name,
+      document: input.document,
+      createdAt: input.createdAt,
+      updatedAt: input.updatedAt
+    })
 
-  constructor (db: Db) {
-    this.collection = db.collection('owners')
-  }
-
-  async save (input: OwnerRepositoryData): Promise<void> {
-    console.log({ input })
-    const results = await this.collection.insertOne(input)
-    console.log({ results })
+    return input
   }
 }
