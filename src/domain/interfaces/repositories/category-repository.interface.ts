@@ -4,7 +4,7 @@ export type CategoryRepositoryData = {
   title: string
   description: string
   createdAt: Date
-  updatedAt?: Date
+  updatedAt: Date | null
 }
 
 export interface CategoryRepositoryInterface {

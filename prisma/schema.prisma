@@ -22,3 +22,14 @@ model Owner {
 
   @@map("owners")
 }
+
+model Category {
+  id          String    @id
+  ownerId     String
+  title       String
+  description String
+  createdAt   DateTime
+  updatedAt   DateTime?
+
+  @@map("categories")
+}

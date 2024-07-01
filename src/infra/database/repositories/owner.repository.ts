@@ -17,4 +17,8 @@ export class OwnerRepository implements OwnerRepositoryInterface {
   async getByDocument (document: string): Promise<OwnerRepositoryData | null> {
     return await prismaClient.owner.findFirst({ where: { document } })
   }
+
+  async getById (id: string): Promise<OwnerRepositoryData | null> {
+    return await prismaClient.owner.findFirst({ where: { id } })
+  }
 }
