@@ -9,4 +9,5 @@ export type OwnerRepositoryData = {
 export interface OwnerRepositoryInterface {
   save: (input: OwnerRepositoryData) => Promise<OwnerRepositoryData>
   getByDocument: (document: string) => Promise<OwnerRepositoryData | null>
+  getById: (document: string) => Promise<OwnerRepositoryData | null>
 }
