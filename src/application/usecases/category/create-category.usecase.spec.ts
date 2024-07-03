@@ -20,7 +20,7 @@ const fakeCategoryEntity = {
   title: 'AnyTitle',
   description: 'anyDescription',
   createdAt: new Date(),
-  updatedAt: undefined
+  updatedAt: null
 }
 
 describe('CreateCategoryUseCase', () => {

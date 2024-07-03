@@ -14,7 +14,7 @@ export class CategoryEntity {
     public readonly title: string,
     public readonly description: string,
     public readonly createdAt: Date,
-    public readonly updatedAt?: Date
+    public readonly updatedAt: Date | null
   ) {}
 
   public static build (input: CategoryData): CategoryEntity {
@@ -32,6 +32,6 @@ export class CategoryEntity {
   }
 
   private static create (input: CategoryData): CategoryEntity {
-    return new CategoryEntity(randomUUID(), input.ownerId, input.title, input.description, new Date())
+    return new CategoryEntity(randomUUID(), input.ownerId, input.title, input.description, new Date(), null)
   }
 }
