@@ -2,6 +2,5 @@ import { CreateOwnerController } from '@/adapters/controllers/owner/create-owner
 import { makeCreateOwnerUsecaseFactory } from '../usecases/create-owner-usecase.factory'
 
 export const makeCreateOwnerControllerFactory = (): CreateOwnerController => {
-  const usecase = makeCreateOwnerUsecaseFactory()
-  return new CreateOwnerController(usecase)
+  return new CreateOwnerController(makeCreateOwnerUsecaseFactory())
 }
