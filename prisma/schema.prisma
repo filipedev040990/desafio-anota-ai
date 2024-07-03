@@ -14,22 +14,41 @@ datasource db {
 }
 
 model Owner {
-  id        String    @id
+  id        String     @id
   name      String
-  document  String    @unique
+  document  String     @unique
   createdAt DateTime
   updatedAt DateTime?
+  Category  Category[]
+  Product   Product[]
 
   @@map("owners")
 }
 
 model Category {
   id          String    @id
+  Owner       Owner     @relation(fields: [ownerId], references: [id])
   ownerId     String
   title       String
   description String
   createdAt   DateTime
   updatedAt   DateTime?
+  Product     Product[]
 
   @@map("categories")
+}
+
+model Product {
+  id          String    @id
+  Category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  Owner       Owner     @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  title       String
+  description String
+  price       Int
+  createdAt   DateTime
+  updatedAt   DateTime?
+
+  @@map("products")
 }
