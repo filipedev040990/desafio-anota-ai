@@ -14,4 +14,8 @@ export class CategoryRepository implements CategoryRepositoryInterface {
       }
     })
   }
+
+  async getById (id: string): Promise<CategoryRepositoryData | null> {
+    return await prismaClient.category.findFirst({ where: { id } })
+  }
 }
