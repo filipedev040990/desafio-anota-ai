@@ -2,6 +2,7 @@ export type OwnerRepositoryData = {
   id: string
   name: string
   document: string
+  password: string
   createdAt: Date
   updatedAt: Date | null
 }

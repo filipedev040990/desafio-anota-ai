@@ -14,7 +14,8 @@ describe('Owner Entity', () => {
     sut = OwnerEntity
     input = {
       name: 'AnyName',
-      document: 'anyDocument'
+      document: 'anyDocument',
+      password: 'anyPassword'
     }
   })
 
@@ -36,12 +37,18 @@ describe('Owner Entity', () => {
     expect(() => sut.build(input)).toThrowError(new MissingParamError('document'))
   })
 
+  test('should throw if owner password is not provided', () => {
+    input.password = undefined
+    expect(() => sut.build(input)).toThrowError(new MissingParamError('password'))
+  })
+
   test('should make a correct Ownew Entity', () => {
     const owner = sut.build(input)
     expect(owner).toEqual({
       id: 'anyId',
       name: 'AnyName',
       document: 'anyDocument',
+      password: 'anyPassword',
       createdAt: new Date(),
       updatedAt: null
     })

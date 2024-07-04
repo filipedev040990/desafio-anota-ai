@@ -16,6 +16,7 @@ describe('GetOwnerByDocumentUseCase', () => {
       id: 'anyId',
       name: 'AnyName',
       document: 'anyDocument',
+      password: 'hashedPassword',
       createdAt: new Date('2024-01-01'),
       updatedAt: null
     })

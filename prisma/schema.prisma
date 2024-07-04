@@ -17,6 +17,7 @@ model Owner {
   id        String     @id
   name      String
   document  String     @unique
+  password  String
   createdAt DateTime
   updatedAt DateTime?
   Category  Category[]

@@ -4,33 +4,34 @@ import { randomUUID } from 'crypto'
 export type OwnerData = {
   name: string
   document: string
+  password: string
 }
 
 export class OwnerEntity {
   constructor (
-    public readonly id: string,
-    public readonly name: string,
-    public readonly document: string,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date | null
+    public id: string,
+    public name: string,
+    public document: string,
+    public password: string,
+    public createdAt: Date,
+    public updatedAt: Date | null
   ) {}
 
   public static build (input: OwnerData): OwnerEntity {
+    this.validate(input)
     return this.create(input)
   }
 
-  private static create (input: OwnerData): OwnerEntity {
-    this.validate(input)
-    return new OwnerEntity(randomUUID(), input.name, input.document, new Date(), null)
+  private static validate (input: OwnerData): void {
+    const requiredFields: Array<keyof OwnerData> = ['name', 'document', 'password']
+    for (const field of requiredFields) {
+      if (!input[field]) {
+        throw new MissingParamError(field)
+      }
+    }
   }
 
-  private static validate (input: OwnerData): void {
-    if (!input?.name) {
-      throw new MissingParamError('name')
-    }
-
-    if (!input?.document) {
-      throw new MissingParamError('document')
-    }
+  private static create (input: OwnerData): OwnerEntity {
+    return new OwnerEntity(randomUUID(), input.name, input.document, input.password, new Date(), null)
   }
 }

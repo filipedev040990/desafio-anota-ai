@@ -8,6 +8,7 @@ export class OwnerRepository implements OwnerRepositoryInterface {
         id: input.id,
         name: input.name,
         document: input.document,
+        password: input.password,
         createdAt: input.createdAt,
         updatedAt: null
       }

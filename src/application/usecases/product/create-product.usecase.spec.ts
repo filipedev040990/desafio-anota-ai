@@ -13,6 +13,7 @@ const fakeOwner = {
   id: 'anyOwnerId',
   name: 'AnyName',
   document: 'anyDocument',
+  password: 'hashedPassword',
   createdAt: new Date(),
   updatedAt: null
 }
