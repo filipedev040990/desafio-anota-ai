@@ -15,9 +15,9 @@ describe('CreateCategoryController', () => {
     sut = new CreateCategoryController(usecase)
     input = {
       body: {
-        ownerId: '',
-        title: '',
-        description: ''
+        ownerId: 'anyId',
+        title: 'anyTitle',
+        description: 'anyDescription'
       }
     }
     usecase.execute.mockResolvedValue({ id: 'anyId' })
