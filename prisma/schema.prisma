@@ -22,6 +22,7 @@ model Owner {
   updatedAt DateTime?
   Category  Category[]
   Product   Product[]
+  Catalog   Catalog[]
 
   @@map("owners")
 }
@@ -35,21 +36,46 @@ model Category {
   createdAt   DateTime
   updatedAt   DateTime?
   Product     Product[]
+  Catalog     Catalog[]
 
   @@map("categories")
 }
 
 model Product {
-  id          String    @id
-  Category    Category  @relation(fields: [categoryId], references: [id])
+  id          String        @id
+  Category    Category      @relation(fields: [categoryId], references: [id])
   categoryId  String
-  Owner       Owner     @relation(fields: [ownerId], references: [id])
+  Owner       Owner         @relation(fields: [ownerId], references: [id])
   ownerId     String
   title       String
   description String
   price       Int
   createdAt   DateTime
   updatedAt   DateTime?
+  CatalogItem CatalogItem[]
 
   @@map("products")
+}
+
+model Catalog {
+  id          String        @id
+  owner       Owner         @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  category    Category      @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  createdAt   DateTime
+  updatedAt   DateTime?
+  CatalogItem CatalogItem[]
+
+  @@map("catalogs")
+}
+
+model CatalogItem {
+  id        String  @id
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  catalog   Catalog @relation(fields: [catalogId], references: [id])
+  catalogId String
+
+  @@map("catalog_items")
 }
