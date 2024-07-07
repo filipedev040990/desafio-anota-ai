@@ -26,7 +26,7 @@ export class CreateProductUseCase implements CreateProductUseCaseInterface {
       throw new InvalidParamError('ownerId')
     }
 
-    const categoryExists = await this.categoryRepository.getById(input?.categoryId)
+    const categoryExists = await this.categoryRepository.getByIdAndOwnerId(input?.categoryId, input?.ownerId)
 
     if (!categoryExists) {
       throw new InvalidParamError('categoryId')

@@ -51,7 +51,7 @@ describe('CreateProductUseCase', () => {
       price: 5000
     }
     ownerRepository.getById.mockResolvedValue(fakeOwner)
-    categoryRepository.getById.mockResolvedValue(fakeCategoryEntuty)
+    categoryRepository.getByIdAndOwnerId.mockResolvedValue(fakeCategoryEntuty)
     jest.spyOn(ProductEntity, 'build').mockReturnValue(fakeProductEntity)
   })
 
@@ -68,14 +68,20 @@ describe('CreateProductUseCase', () => {
     expect(ownerRepository.getById).toHaveBeenCalledWith('anyOwnerId')
   })
 
+  test('shold call CategoryRepository.getByIdAndOwnerId once and with correct values', async () => {
+    await sut.execute(input)
+    expect(categoryRepository.getByIdAndOwnerId).toHaveBeenCalledTimes(1)
+    expect(categoryRepository.getByIdAndOwnerId).toHaveBeenCalledWith('anyCategoryId', 'anyOwnerId')
+  })
+
   test('shold throws if OwnerRepository.getById returns null', async () => {
     ownerRepository.getById.mockResolvedValueOnce(null)
     const promise = sut.execute(input)
     await expect(promise).rejects.toThrowError(new InvalidParamError('ownerId'))
   })
 
-  test('shold throws if categoryRepository.getById returns null', async () => {
-    categoryRepository.getById.mockResolvedValueOnce(null)
+  test('shold throws if categoryRepository.getByIdAndOwnerId returns null', async () => {
+    categoryRepository.getByIdAndOwnerId.mockResolvedValueOnce(null)
     const promise = sut.execute(input)
     await expect(promise).rejects.toThrowError(new InvalidParamError('categoryId'))
   })

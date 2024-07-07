@@ -18,4 +18,8 @@ export class CategoryRepository implements CategoryRepositoryInterface {
   async getById (id: string): Promise<CategoryRepositoryData | null> {
     return await prismaClient.category.findFirst({ where: { id } })
   }
+
+  async getByIdAndOwnerId (categoryId: string, ownerId: string): Promise<CategoryRepositoryData | null> {
+    return await prismaClient.category.findFirst({ where: { id: categoryId, ownerId } })
+  }
 }
