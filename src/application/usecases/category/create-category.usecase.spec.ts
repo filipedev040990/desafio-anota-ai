@@ -1,9 +1,9 @@
 import { CategoryData, CategoryEntity } from '@/domain/entities/category/category.entity'
 import { CreateCategoryUseCase } from './create-category.usecase'
-import { mock } from 'jest-mock-extended'
 import { OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { InvalidParamError } from '@/shared/errors'
 import { CategoryRepositoryInterface } from '@/domain/interfaces/repositories/category-repository.interface'
+import { mock } from 'jest-mock-extended'
 
 const categoryRepository = mock<CategoryRepositoryInterface>()
 const ownerRepository = mock<OwnerRepositoryInterface>()

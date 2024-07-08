@@ -11,4 +11,5 @@ export type ProductRepositoryData = {
 
 export interface ProductRepositoryInterface {
   save: (input: ProductRepositoryData) => Promise<ProductRepositoryData>
+  getById: (id: string) => Promise<ProductRepositoryData | null>
 }

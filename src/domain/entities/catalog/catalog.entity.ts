@@ -4,13 +4,7 @@ import { randomUUID } from 'crypto'
 export type CatalogData = {
   ownerId: string
   categoryId: string
-  items: Item []
-}
-
-export type Item = {
-  title: string
-  description: string
-  price: number
+  items: string []
 }
 
 export class CatalogEntity {
@@ -18,7 +12,7 @@ export class CatalogEntity {
     public readonly id: string,
     public readonly ownerId: string,
     public readonly categoryId: string,
-    public readonly items: Item [],
+    public readonly items: string [],
     public readonly createdAt: Date,
     public readonly updatedAt: Date | null
   ) {}
