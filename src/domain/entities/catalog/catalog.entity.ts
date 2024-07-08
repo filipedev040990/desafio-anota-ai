@@ -12,7 +12,6 @@ export class CatalogEntity {
     public readonly id: string,
     public readonly ownerId: string,
     public readonly categoryId: string,
-    public readonly items: string [],
     public readonly createdAt: Date,
     public readonly updatedAt: Date | null
   ) {}
@@ -36,6 +35,6 @@ export class CatalogEntity {
   }
 
   private static create (input: CatalogData): CatalogEntity {
-    return new CatalogEntity(randomUUID(), input.ownerId, input.categoryId, input.items, new Date(), null)
+    return new CatalogEntity(randomUUID(), input.ownerId, input.categoryId, new Date(), null)
   }
 }

@@ -15,6 +15,7 @@
     "test:coverage": "npm t -- --coverage"
   },
   "dependencies": {
+    "@aws-sdk/client-sqs": "^3.609.0",
     "@prisma/client": "^5.16.1",
     "@types/cors": "^2.8.13",
     "bcrypt": "^5.1.1",

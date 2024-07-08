@@ -14,17 +14,7 @@ describe('CatalogEntity', () => {
     sut = CatalogEntity
     input = {
       ownerId: 'anyOwnerId',
-      categoryId: 'AnyTitle',
-      items: [
-        {
-          title: 'Product 1',
-          description: 'Product 1',
-          price: 1800
-        }, {
-          title: 'Product 2',
-          description: 'Product 2',
-          price: 1000
-        }]
+      categoryId: 'AnyTitle'
     }
   })
 
@@ -56,7 +46,6 @@ describe('CatalogEntity', () => {
       id: 'anyId',
       ownerId: 'anyOwnerId',
       categoryId: 'AnyTitle',
-      items: input.items,
       createdAt: new Date(),
       updatedAt: null
     })

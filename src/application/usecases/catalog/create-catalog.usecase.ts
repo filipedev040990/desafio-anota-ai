@@ -36,7 +36,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
 
     await this.catalogRepository.save(catalog)
 
-    catalog.items.map(async (item) => {
+    input.items.map(async (item) => {
       const catalogItem = CatalogItemEntity.build({ catalogId: catalog.id, productId: item })
       await this.catalogRepository.saveItems(catalogItem)
     })
@@ -75,7 +75,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
   }
 
   async handleProducts (productsId: string[]): Promise<Item []> {
-    if (!productsId.length) {
+    if (!productsId?.length) {
       throw new MissingParamError('items')
     }
 
