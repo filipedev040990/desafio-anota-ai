@@ -9,4 +9,12 @@ export class CatalogRepository implements CatalogRepositoryInterface {
   async saveItems (data: CatalogItemRepositoryData): Promise<void> {
     await prismaClient.catalogItem.create({ data })
   }
+
+  async deleteItems (catalogId: string): Promise<void> {
+    await prismaClient.catalogItem.deleteMany({ where: { catalogId } })
+  }
+
+  async getByOwnerIdAndCategoryId (ownerId: string, categoryId: string): Promise<CatalogRepositoryData | null> {
+    return await prismaClient.catalog.findFirst({ where: { ownerId, categoryId } })
+  }
 }

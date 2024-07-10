@@ -3,7 +3,6 @@ export type CatalogRepositoryData = {
   ownerId: string
   categoryId: string
   createdAt: Date
-  updatedAt: Date | null
 }
 
 export type CatalogItemRepositoryData = {
@@ -17,4 +16,6 @@ export type CatalogItemRepositoryData = {
 export interface CatalogRepositoryInterface {
   save: (input: CatalogRepositoryData) => Promise<CatalogRepositoryData>
   saveItems: (input: CatalogItemRepositoryData) => Promise<void>
+  deleteItems: (catalogId: string) => Promise<void>
+  getByOwnerIdAndCategoryId: (ownerId: string, categoryId: string) => Promise <CatalogRepositoryData | null>
 }

@@ -1,7 +1,7 @@
 import { CatalogItemEntity } from '@/domain/entities/catalog-item/catalog-item.entity'
 import { CatalogData, CatalogEntity } from '@/domain/entities/catalog/catalog.entity'
 import { QueueInterface } from '@/domain/interfaces/queue/queue.interface'
-import { CatalogRepositoryInterface } from '@/domain/interfaces/repositories/catalog-repository.interface'
+import { CatalogRepositoryData, CatalogRepositoryInterface } from '@/domain/interfaces/repositories/catalog-repository.interface'
 import { CategoryRepositoryData, CategoryRepositoryInterface } from '@/domain/interfaces/repositories/category-repository.interface'
 import { OwnerRepositoryData, OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { ProductRepositoryInterface } from '@/domain/interfaces/repositories/product-repository.interface'
@@ -30,20 +30,12 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
   async execute (input: CatalogData): Promise<{ id: string }> {
     const owner = await this.handleOwner(input?.ownerId)
     const category = await this.handleCategory(input?.categoryId, input?.ownerId)
-    const products = await this.handleProducts(input?.items)
-
-    const catalog = CatalogEntity.build({ ownerId: owner.id, categoryId: category.id, items: products.map(product => product.id) })
-
-    await this.catalogRepository.save(catalog)
-
-    input.items.map(async (item) => {
-      const catalogItem = CatalogItemEntity.build({ catalogId: catalog.id, productId: item })
-      await this.catalogRepository.saveItems(catalogItem)
-    })
+    const products = await this.handleProducts(input?.items, input?.categoryId)
+    const catalogId = await this.handleCatalog(owner.id, category.id, products.map(product => product.id))
 
     await this.sendMessage(owner.id)
 
-    return { id: catalog.id }
+    return { id: catalogId }
   }
 
   async handleOwner (ownerId: string): Promise<OwnerRepositoryData> {
@@ -74,7 +66,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
     return category
   }
 
-  async handleProducts (productsId: string[]): Promise<Item []> {
+  async handleProducts (productsId: string[], categoryId: string): Promise<Item []> {
     if (!productsId?.length) {
       throw new MissingParamError('items')
     }
@@ -82,7 +74,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
     const products: Item [] = []
 
     for (const productId of productsId) {
-      const product = await this.productRepository.getById(productId)
+      const product = await this.productRepository.getByIdAndCategoryId(productId, categoryId)
 
       if (!product) {
         throw new InvalidParamError(`productId: ${productId}`)
@@ -98,9 +90,39 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
     return products
   }
 
+  async handleCatalog (ownerId: string, categoryId: string, productsId: string[]): Promise<string> {
+    const catalogExists = await this.catalogRepository.getByOwnerIdAndCategoryId(ownerId, categoryId)
+
+    if (catalogExists) {
+      return await this.handleExistingCatalog(catalogExists, categoryId, productsId)
+    } else {
+      return await this.handleNewCatalog(ownerId, categoryId, productsId)
+    }
+  }
+
+  async handleExistingCatalog (catalog: CatalogRepositoryData, categoryId: string, productsId: string []): Promise<string> {
+    await this.catalogRepository.deleteItems(catalog.id)
+    await this.saveCatalogItems(catalog.id, productsId)
+    return catalog.id
+  }
+
+  async handleNewCatalog (ownerId: string, categoryId: string, productsId: string []): Promise<string> {
+    const catalog = CatalogEntity.build({ ownerId, categoryId, items: productsId })
+    await this.catalogRepository.save(catalog)
+    await this.saveCatalogItems(catalog.id, productsId)
+    return catalog.id
+  }
+
+  async saveCatalogItems (catalogId: string, productsId: string []): Promise<void> {
+    productsId.map(async (item) => {
+      const catalogItem = CatalogItemEntity.build({ catalogId, productId: item })
+      await this.catalogRepository.saveItems(catalogItem)
+    })
+  }
+
   async sendMessage (ownerId: string): Promise<void> {
     const messageBody = JSON.stringify({ ownerId })
-    const queueName = 'emit_catalog.fifo'
+    const queueName = constants.QUEUE_EMIT_CATALOG
     const deduplicationId = queueDeduplicationIdGenerate()
 
     const success = await this.queueService.sendMessage(queueName, messageBody, constants.MESSAGE_GROUP_ID, deduplicationId)

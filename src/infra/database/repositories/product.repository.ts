@@ -19,4 +19,8 @@ export class ProductRepository implements ProductRepositoryInterface {
   async getById (id: string): Promise<ProductRepositoryData | null> {
     return await prismaClient.product.findFirst({ where: { id } })
   }
+
+  async getByIdAndCategoryId (id: string, categoryId: string): Promise<ProductRepositoryData | null> {
+    return await prismaClient.product.findFirst({ where: { id, categoryId } })
+  }
 }

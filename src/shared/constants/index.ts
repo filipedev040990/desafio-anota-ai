@@ -1,3 +1,4 @@
 export default {
-  MESSAGE_GROUP_ID: 'emit_catalog'
+  MESSAGE_GROUP_ID: 'emit_catalog',
+  QUEUE_EMIT_CATALOG: 'emit_catalog.fifo'
 }

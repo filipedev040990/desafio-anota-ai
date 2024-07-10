@@ -71,7 +71,7 @@ describe('CreateCatalogUseCase', () => {
     }
     ownerRepository.getById.mockResolvedValue(fakeOwner)
     categoryRepository.getByIdAndOwnerId.mockResolvedValue(fakeCategory)
-    productRepository.getById.mockResolvedValue(input.items[0] ? fakeProducts[0] : fakeProducts[1])
+    productRepository.getByIdAndCategoryId.mockResolvedValue(input.items[0] ? fakeProducts[0] : fakeProducts[1])
     queueService.sendMessage.mockResolvedValue(true)
 
     jest.spyOn(queueHelper, 'queueDeduplicationIdGenerate').mockReturnValue('anyDeduplicationId')
@@ -115,22 +115,22 @@ describe('CreateCatalogUseCase', () => {
     await expect(promise).rejects.toThrowError(new InvalidParamError('categoryId'))
   })
 
-  test('should call productRepository.getById once and with correct ownerId', async () => {
+  test('should call productRepository.getByIdAndCategoryId once and with correct ownerId', async () => {
     await sut.execute(input)
-    expect(productRepository.getById).toHaveBeenCalledTimes(2)
+    expect(productRepository.getByIdAndCategoryId).toHaveBeenCalledTimes(2)
 
     if (input.items[0]) {
-      expect(productRepository.getById).toHaveBeenCalledWith('Product 1')
+      expect(productRepository.getByIdAndCategoryId).toHaveBeenCalledWith('Product 1', 'anyCategoryId')
     }
 
     if (input.items[1]) {
-      expect(productRepository.getById).toHaveBeenCalledWith('Product 2')
+      expect(productRepository.getByIdAndCategoryId).toHaveBeenCalledWith('Product 2', 'anyCategoryId')
     }
   })
 
-  test('should throw if productRepository.getById returns null', async () => {
+  test('should throw if productRepository.getByIdAndCategoryId returns null', async () => {
     if (input.items[0]) {
-      productRepository.getById.mockResolvedValueOnce(null)
+      productRepository.getByIdAndCategoryId.mockResolvedValueOnce(null)
     }
 
     const promise = sut.execute(input)
@@ -143,6 +143,12 @@ describe('CreateCatalogUseCase', () => {
     await sut.execute(input)
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith(input)
+  })
+
+  test('should call catalogRepository.getByOwnerIdAndCategoryId once and with correct ownerId', async () => {
+    await sut.execute(input)
+    expect(catalogRepository.getByOwnerIdAndCategoryId).toHaveBeenCalledTimes(1)
+    expect(catalogRepository.getByOwnerIdAndCategoryId).toHaveBeenCalledWith('anyOwnerId', 'anyCategoryId')
   })
 
   test('should call catalogRepository.save once and with correct ownerId', async () => {
