@@ -19,61 +19,50 @@ export class CatalogRepository implements CatalogRepositoryInterface {
   }
 
   async getFullCatalog (ownerId: string): Promise<FullCatalogRepositoryData | null> {
-    const fullCatalog = await prismaClient.owner.findFirst({
+    const fullCatalog = await prismaClient.catalog.findMany({
       select: {
-        name: true,
-        Category: {
+        id: true,
+        categoryId: true,
+        ownerId: true,
+        CatalogItem: {
           select: {
-            id: true,
-            title: true,
-            description: true
+            catalogId: true,
+            productId: true,
+            product: {
+              select: {
+                title: true,
+                description: true,
+                price: true,
+                Category: {
+                  select: {
+                    title: true,
+                    description: true
+                  }
+                }
+              }
+            }
           }
         },
-        Product: {
+        owner: {
           select: {
-            title: true,
-            description: true,
-            price: true,
-            categoryId: true,
-            ownerId: true
-          }
-        },
-        Catalog: {
-          select: {
-            ownerId: true,
-            categoryId: true
+            name: true
           }
         }
       },
-      where: {
-        id: ownerId
-      }
+      where: { ownerId }
     })
 
-    const catalog: FullCatalog [] = []
-
-    fullCatalog?.Category.map((category) => {
-      const filteredProducts = fullCatalog.Product.filter((product) => product.categoryId === category.id && product.ownerId === ownerId)
-
-      const mappedProducts = filteredProducts.map((product) => ({
-        title: product.title,
-        description: product.description,
-        price: product.price
+    return {
+      owner: fullCatalog[0].owner.name,
+      catalogs: fullCatalog.map(catalog => ({
+        categoryTitle: catalog.CatalogItem[0].product.Category.title,
+        categoryDescription: catalog.CatalogItem[0].product.Category.description,
+        items: catalog.CatalogItem.map(item => ({
+          title: item.product.title,
+          description: item.product.description,
+          price: item.product.price
+        }))
       }))
-
-      catalog.push({
-        categoryTitle: category.title,
-        categoryDescription: category.description,
-        items: mappedProducts
-      })
-      return catalog
-    })
-
-    const output = {
-      owner: fullCatalog?.name,
-      catalog
     }
-
-    return output as any
   }
 }
