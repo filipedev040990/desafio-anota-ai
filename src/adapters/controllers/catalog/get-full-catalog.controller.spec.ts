@@ -9,7 +9,7 @@ import { mock } from 'jest-mock-extended'
 const usecase = mock<GetCatalogByOwnerIdUseCaseInterface>()
 const fakeFullCatalog: FullCatalogRepositoryData = {
   owner: 'AnyOwnerName',
-  catalog: [{
+  catalogs: [{
     categoryTitle: 'AnyCategoryTitle',
     categoryDescription: 'AnyCategoryDescription',
     items: [{

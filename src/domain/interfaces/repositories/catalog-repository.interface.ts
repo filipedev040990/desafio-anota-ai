@@ -15,7 +15,7 @@ export type CatalogItemRepositoryData = {
 
 export type FullCatalogRepositoryData = {
   owner: string
-  catalog: FullCatalog []
+  catalogs: FullCatalog []
 }
 
 export type FullCatalog = {

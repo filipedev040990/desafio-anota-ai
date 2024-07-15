@@ -5,7 +5,7 @@ import { CatalogRepositoryInterface, FullCatalogRepositoryData } from '@/domain/
 const repository = mock<CatalogRepositoryInterface>()
 const fakeFullCatalog: FullCatalogRepositoryData = {
   owner: 'AnyOwnerName',
-  catalog: [{
+  catalogs: [{
     categoryTitle: 'AnyCategoryTitle',
     categoryDescription: 'AnyCategoryDescription',
     items: [{
