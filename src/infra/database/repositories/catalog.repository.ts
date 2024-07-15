@@ -52,6 +52,10 @@ export class CatalogRepository implements CatalogRepositoryInterface {
       where: { ownerId }
     })
 
+    if (!fullCatalog) {
+      return null
+    }
+
     return {
       owner: fullCatalog[0].owner.name,
       catalogs: fullCatalog.map(catalog => ({

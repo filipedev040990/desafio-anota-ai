@@ -35,5 +35,6 @@ export interface CatalogRepositoryInterface {
   saveItems: (input: CatalogItemRepositoryData) => Promise<void>
   deleteItems: (catalogId: string) => Promise<void>
   getByOwnerIdAndCategoryId: (ownerId: string, categoryId: string) => Promise <CatalogRepositoryData | null>
+  getByOwnerId: (ownerId: string) => Promise <CatalogRepositoryData [] | null>
   getFullCatalog: (ownerId: string) => Promise<FullCatalogRepositoryData | null>
 }
