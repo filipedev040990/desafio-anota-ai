@@ -6,5 +6,5 @@ export type createOrUpdateObjectInput = {
 }
 
 export interface bucketInterface {
-  createOrUpdateObject: (input: createOrUpdateObjectInput) => Promise<boolean>
+  createOrUpdateObject: (input: createOrUpdateObjectInput) => Promise<void>
 }

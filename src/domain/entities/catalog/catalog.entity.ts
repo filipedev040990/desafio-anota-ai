@@ -29,7 +29,7 @@ export class CatalogEntity {
       }
     }
 
-    if (input?.items.length < 1) {
+    if (input?.items?.length < 1) {
       throw new MissingParamError('items')
     }
   }
