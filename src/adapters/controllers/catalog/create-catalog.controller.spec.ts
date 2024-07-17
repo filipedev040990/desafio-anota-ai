@@ -20,7 +20,7 @@ describe('CreateCatalogController', () => {
         items: ['Product1Id', 'Product2Id']
       }
     }
-    usecase.execute.mockResolvedValue({ id: 'anyCatalogId' })
+    usecase.execute.mockResolvedValue({ id: 'anyCatalogId', bucketUrl: 'anyBucketUrl' })
   })
 
   test('should call CreateCatalogUseCase once and with correct values', async () => {
@@ -31,7 +31,7 @@ describe('CreateCatalogController', () => {
 
   test('should return a correct output', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 201, body: { id: 'anyCatalogId' } })
+    expect(output).toEqual({ statusCode: 201, body: { id: 'anyCatalogId', bucketUrl: 'anyBucketUrl' } })
   })
 
   test('should return a correct error if CreateOwnerUseCase throws', async () => {
