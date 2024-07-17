@@ -1,7 +1,7 @@
 import { OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { CryptographyInterface } from '@/domain/interfaces/tools/cryptography.interface'
 import { UpdateOwnerInput, UpdateOwnerUseCaseInterface } from '@/domain/interfaces/usecases/owner/update-owner-usecase.interface'
-import { ConflictError, MissingParamError } from '@/shared/errors'
+import { ConflictError, InvalidParamError, MissingParamError } from '@/shared/errors'
 
 export class UpdateOwnerUseCase implements UpdateOwnerUseCaseInterface {
   constructor (
@@ -15,13 +15,18 @@ export class UpdateOwnerUseCase implements UpdateOwnerUseCaseInterface {
   }
 
   async validate (input: UpdateOwnerInput): Promise<void> {
-    if (!input?.id) {
+    const { id, name, document, password } = input
+    if (!id) {
       throw new MissingParamError('id')
     }
 
-    if (input.document) {
-      const owner = await this.ownerRepository.getByDocument(input.document)
-      if (owner && owner.id !== input.id) {
+    if (!name && !document && !password) {
+      throw new InvalidParamError('Enter a field to be changed')
+    }
+
+    if (document) {
+      const owner = await this.ownerRepository.getByDocument(document)
+      if (owner && owner.id !== id) {
         throw new ConflictError('document')
       }
     }

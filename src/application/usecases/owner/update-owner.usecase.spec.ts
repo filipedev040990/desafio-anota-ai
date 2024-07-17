@@ -1,6 +1,6 @@
 import { UpdateOwnerInput } from '@/domain/interfaces/usecases/owner/update-owner-usecase.interface'
 import { UpdateOwnerUseCase } from './update-owner.usecase'
-import { ConflictError, MissingParamError } from '@/shared/errors'
+import { ConflictError, InvalidParamError, MissingParamError } from '@/shared/errors'
 import { mock } from 'jest-mock-extended'
 import { OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { CryptographyInterface } from '@/domain/interfaces/tools/cryptography.interface'
@@ -36,6 +36,14 @@ describe('UpdateOwnerUseCase', () => {
     input.id = undefined as any
     const promise = sut.execute(input)
     await expect(promise).rejects.toThrowError(new MissingParamError('id'))
+  })
+
+  test('should throw if all optional fields are empty', async () => {
+    input.name = undefined as any
+    input.document = undefined as any
+    input.password = undefined as any
+    const promise = sut.execute(input)
+    await expect(promise).rejects.toThrowError(new InvalidParamError('Enter a field to be changed'))
   })
 
   test('should call OwnerRepository.getByDocument once and with correct document when is provided', async () => {
