@@ -3,6 +3,7 @@ import { bucketInterface } from '@/domain/interfaces/tools/bucket.interface'
 import { UpdateCatalogOnS3Interface } from '@/domain/interfaces/usecases/catalog/update-catalog-on-s3-usecase.interface'
 import constants from '@/shared/constants'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import { logger } from '@/shared/helpers/logger.helper'
 
 export class UpdateCatalogOnS3 implements UpdateCatalogOnS3Interface {
   constructor (
@@ -20,13 +21,13 @@ export class UpdateCatalogOnS3 implements UpdateCatalogOnS3Interface {
       throw new InvalidParamError('ownerId')
     }
 
-    const bucketName = constants.CATALOG_BUCKET_NAME
-
     await this.bucketService.createOrUpdateObject({
-      Bucket: bucketName,
-      Key: `${bucketName}/${ownerId}.json`,
+      Bucket: constants.CATALOG_BUCKET_NAME,
+      Key: `${ownerId}.json`,
       Body: JSON.stringify(catalogs),
       ContentType: 'application/json'
     })
+
+    logger.info(`Updating catalog: ${ownerId}`)
   }
 }

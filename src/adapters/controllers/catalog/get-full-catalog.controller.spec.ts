@@ -3,22 +3,10 @@ import { InvalidParamError } from '@/shared/errors'
 import { badRequest } from '@/shared/helpers/http.helper'
 import { GetCatalogByOwnerIdController } from './get-full-catalog.controller'
 import { GetCatalogByOwnerIdUseCaseInterface } from '@/domain/interfaces/usecases/catalog/get-catalog-by-ownerId.usecase.interface'
-import { FullCatalogRepositoryData } from '@/domain/interfaces/repositories/catalog-repository.interface'
 import { mock } from 'jest-mock-extended'
 
 const usecase = mock<GetCatalogByOwnerIdUseCaseInterface>()
-const fakeFullCatalog: FullCatalogRepositoryData = {
-  owner: 'AnyOwnerName',
-  catalogs: [{
-    categoryTitle: 'AnyCategoryTitle',
-    categoryDescription: 'AnyCategoryDescription',
-    items: [{
-      title: 'anyItemTitle',
-      description: 'anyItemDescription',
-      price: 1000
-    }]
-  }]
-}
+const fakeS3Url = 'anyUrl'
 describe('GetCatalogByOwnerIdController', () => {
   let sut: GetCatalogByOwnerIdController
   let input: HttpRequest
@@ -30,7 +18,7 @@ describe('GetCatalogByOwnerIdController', () => {
         ownerId: 'anyOwnerId'
       }
     }
-    usecase.execute.mockResolvedValue(fakeFullCatalog)
+    usecase.execute.mockResolvedValue(fakeS3Url)
   })
 
   test('should call CreateCatalogUseCase once and with correct values', async () => {
@@ -41,7 +29,7 @@ describe('GetCatalogByOwnerIdController', () => {
 
   test('should return a correct output', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 201, body: fakeFullCatalog })
+    expect(output).toEqual({ statusCode: 201, body: fakeS3Url })
   })
 
   test('should return a correct error if CreateOwnerUseCase throws', async () => {

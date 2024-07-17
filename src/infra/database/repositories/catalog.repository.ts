@@ -1,5 +1,6 @@
-import { CatalogItemRepositoryData, CatalogRepositoryData, CatalogRepositoryInterface, FullCatalog, FullCatalogRepositoryData } from '@/domain/interfaces/repositories/catalog-repository.interface'
+import { CatalogItemRepositoryData, CatalogRepositoryData, CatalogRepositoryInterface, FullCatalogRepositoryData } from '@/domain/interfaces/repositories/catalog-repository.interface'
 import { prismaClient } from '../prisma-client'
+import constants from '@/shared/constants'
 
 export class CatalogRepository implements CatalogRepositoryInterface {
   async save (data: CatalogRepositoryData): Promise<CatalogRepositoryData> {
@@ -68,5 +69,12 @@ export class CatalogRepository implements CatalogRepositoryInterface {
         }))
       }))
     }
+  }
+
+  async getCatalogS3 (ownerId: string): Promise<string> {
+    const bucketName = constants.CATALOG_BUCKET_NAME
+    const region = process.env.AWS_REGION
+    const key = `${ownerId}.json`
+    return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`
   }
 }

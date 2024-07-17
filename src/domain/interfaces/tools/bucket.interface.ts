@@ -5,6 +5,11 @@ export type createOrUpdateObjectInput = {
   ContentType: string
 }
 
+export type getObjectInput = {
+  bucket: string
+  key: string
+}
+
 export interface bucketInterface {
   createOrUpdateObject: (input: createOrUpdateObjectInput) => Promise<void>
 }

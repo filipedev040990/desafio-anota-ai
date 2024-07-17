@@ -1,6 +1,5 @@
 import { bucketInterface, createOrUpdateObjectInput } from '@/domain/interfaces/tools/bucket.interface'
 import { PutObjectCommand, PutObjectRequest, S3Client } from '@aws-sdk/client-s3'
-import { Readable } from 'stream'
 
 export class AwsS3Adapter implements bucketInterface {
   private readonly client: S3Client
@@ -13,8 +12,9 @@ export class AwsS3Adapter implements bucketInterface {
     const bucketInput: PutObjectRequest = {
       Bucket: input.Bucket,
       Key: input.Key,
-      Body: Readable.from([input.Body]),
+      Body: input.Body,
       ContentType: input.ContentType
+
     }
 
     const command = new PutObjectCommand(bucketInput)
