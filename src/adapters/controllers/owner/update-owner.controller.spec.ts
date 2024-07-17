@@ -15,7 +15,7 @@ describe('UpdateOwnerController', () => {
     sut = new UpdateOwnerController(updateOwnerUseCase)
     input = {
       body: {
-        id: 'anyId',
+        ownerId: 'anyId',
         name: 'NewName',
         document: 'NewDocument',
         password: 'newPassword'
@@ -27,7 +27,7 @@ describe('UpdateOwnerController', () => {
     await sut.execute(input)
     expect(updateOwnerUseCase.execute).toHaveBeenCalledTimes(1)
     expect(updateOwnerUseCase.execute).toHaveBeenCalledWith({
-      id: 'anyId',
+      ownerId: 'anyId',
       name: 'NewName',
       document: 'NewDocument',
       password: 'newPassword'

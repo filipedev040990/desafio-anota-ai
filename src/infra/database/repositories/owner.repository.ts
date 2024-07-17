@@ -25,9 +25,9 @@ export class OwnerRepository implements OwnerRepositoryInterface {
   }
 
   async update (input: UpdateOwnerInput): Promise<void> {
-    const { id, name, document, password } = input
+    const { ownerId, name, document, password } = input
 
-    const data: UpdateOwnerInput = { id }
+    const data: Omit<UpdateOwnerInput, 'ownerId'> = {}
 
     if (name) {
       data.name = name
@@ -41,6 +41,6 @@ export class OwnerRepository implements OwnerRepositoryInterface {
       data.password = password
     }
 
-    await prismaClient.owner.update({ where: { id }, data })
+    await prismaClient.owner.update({ where: { id: ownerId }, data })
   }
 }

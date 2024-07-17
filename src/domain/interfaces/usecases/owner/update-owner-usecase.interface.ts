@@ -1,5 +1,5 @@
 export type UpdateOwnerInput = {
-  id: string
+  ownerId: string
   name?: string
   document?: string
   password?: string

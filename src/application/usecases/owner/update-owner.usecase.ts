@@ -15,9 +15,9 @@ export class UpdateOwnerUseCase implements UpdateOwnerUseCaseInterface {
   }
 
   async validate (input: UpdateOwnerInput): Promise<void> {
-    const { id, name, document, password } = input
-    if (!id) {
-      throw new MissingParamError('id')
+    const { ownerId, name, document, password } = input
+    if (!ownerId) {
+      throw new MissingParamError('ownerId')
     }
 
     if (!name && !document && !password) {
@@ -26,14 +26,14 @@ export class UpdateOwnerUseCase implements UpdateOwnerUseCaseInterface {
 
     if (document) {
       const owner = await this.ownerRepository.getByDocument(document)
-      if (owner && owner.id !== id) {
+      if (owner && owner.id !== ownerId) {
         throw new ConflictError('document')
       }
     }
   }
 
   makeInput (input: UpdateOwnerInput): UpdateOwnerInput {
-    const output: UpdateOwnerInput = { id: input.id }
+    const output: UpdateOwnerInput = { ownerId: input.ownerId }
 
     if (input?.document) {
       output.document = input.document

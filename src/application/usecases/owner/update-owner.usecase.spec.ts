@@ -23,7 +23,7 @@ describe('UpdateOwnerUseCase', () => {
   beforeEach(() => {
     sut = new UpdateOwnerUseCase(ownerRepository, cryptographyService)
     input = {
-      id: 'anyId',
+      ownerId: 'anyId',
       name: 'NewName',
       document: 'NewDocument',
       password: 'newPassword'
@@ -33,9 +33,9 @@ describe('UpdateOwnerUseCase', () => {
   })
 
   test('should throw if id is not provided', async () => {
-    input.id = undefined as any
+    input.ownerId = undefined as any
     const promise = sut.execute(input)
-    await expect(promise).rejects.toThrowError(new MissingParamError('id'))
+    await expect(promise).rejects.toThrowError(new MissingParamError('ownerId'))
   })
 
   test('should throw if all optional fields are empty', async () => {
@@ -67,7 +67,7 @@ describe('UpdateOwnerUseCase', () => {
   test('should make a correct input when all field are provideds', async () => {
     const inputToUpdate = sut.makeInput(input)
     expect(inputToUpdate).toEqual({
-      id: 'anyId',
+      ownerId: 'anyId',
       name: 'NewName',
       document: 'NewDocument',
       password: 'hashedPassword'
@@ -78,7 +78,7 @@ describe('UpdateOwnerUseCase', () => {
     input.name = undefined as any
     const inputToUpdate = sut.makeInput(input)
     expect(inputToUpdate).toEqual({
-      id: 'anyId',
+      ownerId: 'anyId',
       document: 'NewDocument',
       password: 'hashedPassword'
     })
@@ -88,7 +88,7 @@ describe('UpdateOwnerUseCase', () => {
     input.document = undefined as any
     const inputToUpdate = sut.makeInput(input)
     expect(inputToUpdate).toEqual({
-      id: 'anyId',
+      ownerId: 'anyId',
       name: 'NewName',
       password: 'hashedPassword'
     })
@@ -98,7 +98,7 @@ describe('UpdateOwnerUseCase', () => {
     input.password = undefined as any
     const inputToUpdate = sut.makeInput(input)
     expect(inputToUpdate).toEqual({
-      id: 'anyId',
+      ownerId: 'anyId',
       name: 'NewName',
       document: 'NewDocument'
     })
@@ -108,7 +108,7 @@ describe('UpdateOwnerUseCase', () => {
     await sut.execute(input)
     expect(ownerRepository.update).toHaveBeenCalledTimes(1)
     expect(ownerRepository.update).toHaveBeenCalledWith({
-      id: 'anyId',
+      ownerId: 'anyId',
       name: 'NewName',
       document: 'NewDocument',
       password: 'hashedPassword'
