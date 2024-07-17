@@ -40,3 +40,11 @@ export const serverError = (error: Error): HttpResponse => {
     }
   }
 }
+
+export const conflict = (error: Error): HttpResponse => ({
+  statusCode: 409,
+  body: {
+    error: error.name,
+    message: error.message
+  }
+})
