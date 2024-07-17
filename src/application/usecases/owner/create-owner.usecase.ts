@@ -1,4 +1,4 @@
-import { OwnerData, OwnerEntity } from '@/domain/entities/owner/owner.entitt'
+import { OwnerData, OwnerEntity } from '@/domain/entities/owner/owner.entity'
 import { OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { CryptographyInterface } from '@/domain/interfaces/tools/cryptography.interface'
 import { CreateOwnerUseCaseInterface } from '@/domain/interfaces/usecases/owner/create-owner-usecase.interface'

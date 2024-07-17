@@ -1,4 +1,4 @@
-import { OwnerData, OwnerEntity } from '@/domain/entities/owner/owner.entitt'
+import { OwnerData, OwnerEntity } from '@/domain/entities/owner/owner.entity'
 import { CreateOwnerUseCase } from './create-owner.usecase'
 import { OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { mock } from 'jest-mock-extended'

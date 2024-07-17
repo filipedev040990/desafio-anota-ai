@@ -1,5 +1,5 @@
 import { MissingParamError } from '@/shared/errors'
-import { OwnerEntity } from './owner.entitt'
+import { OwnerEntity } from './owner.entity'
 import MockDate from 'mockdate'
 
 jest.mock('crypto', () => ({

@@ -60,7 +60,7 @@ describe('UpdateCatalogOnS3', () => {
     expect(bucketService.createOrUpdateObject).toHaveBeenCalledTimes(1)
     expect(bucketService.createOrUpdateObject).toHaveBeenCalledWith({
       Bucket: 'anota-ai-catalogs',
-      Key: 'anota-ai-catalogs/anyOwnerId.json',
+      Key: 'anyOwnerId.json',
       Body: JSON.stringify(fakeFullCatalog),
       ContentType: 'application/json'
     })

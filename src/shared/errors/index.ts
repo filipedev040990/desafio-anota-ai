@@ -45,3 +45,9 @@ export class InvalidJwtError extends Error {
     this.name = 'InvalidJwtError'
   }
 }
+export class ConflictError extends Error {
+  constructor (resource: string) {
+    super(`The resource ${resource} already exists`)
+    this.name = 'ConflictError'
+  }
+}
