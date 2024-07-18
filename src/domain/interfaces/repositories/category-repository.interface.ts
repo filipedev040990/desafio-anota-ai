@@ -11,4 +11,5 @@ export interface CategoryRepositoryInterface {
   save: (input: CategoryRepositoryData) => Promise<CategoryRepositoryData>
   getById: (id: string) => Promise<CategoryRepositoryData | null>
   getByIdAndOwnerId: (categoryId: string, ownerId: string) => Promise<CategoryRepositoryData | null>
+  getByOwnerId: (ownerId: string) => Promise<CategoryRepositoryData [] | null>
 }
