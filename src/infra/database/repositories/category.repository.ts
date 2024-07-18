@@ -22,4 +22,9 @@ export class CategoryRepository implements CategoryRepositoryInterface {
   async getByIdAndOwnerId (categoryId: string, ownerId: string): Promise<CategoryRepositoryData | null> {
     return await prismaClient.category.findFirst({ where: { id: categoryId, ownerId } })
   }
+
+  async getByOwnerId (ownerId: string): Promise<CategoryRepositoryData[] | null> {
+    const categories = await prismaClient.category.findMany({ where: { ownerId } })
+    return categories.length ? categories : null
+  }
 }
