@@ -15,7 +15,7 @@ const router = Router()
 router.post('/auth', expressRouteAdapter(makeAuthenticateControllerFactory()))
 
 // Owner
-router.post('/owner', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeCreateOwnerControllerFactory()))
+router.post('/owner', expressRouteAdapter(makeCreateOwnerControllerFactory()))
 router.put('/owner', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeUpdateOwnerControllerFactory()))
 
 router.post('/category', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeCreateCategoryControllerFactory()))

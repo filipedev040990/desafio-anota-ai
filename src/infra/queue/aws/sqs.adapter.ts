@@ -1,4 +1,4 @@
-import { SendMessageRequest, SQSClient, SendMessageCommand, ReceiveMessageCommand, ReceiveMessageRequest, DeleteMessageRequest, DeleteMessageCommand } from '@aws-sdk/client-sqs'
+import { SendMessageRequest, SQSClient, SendMessageCommand, ReceiveMessageCommand, ReceiveMessageRequest, DeleteMessageRequest, DeleteMessageCommand, CreateQueueRequest, CreateQueueCommand } from '@aws-sdk/client-sqs'
 import { logger } from '@/shared/helpers/logger.helper'
 import { QueueInterface } from '@/domain/interfaces/queue/queue.interface'
 
@@ -52,6 +52,21 @@ export class AwsSqsAdapter implements QueueInterface {
     logger.info(`Deleting message: ${messageId}`)
 
     await this.client.send(command)
+  }
+
+  async createQueueFIFO (queueName: string): Promise<void> {
+    const input: CreateQueueRequest = {
+      QueueName: queueName,
+      Attributes: {
+        FifoQueue: 'true',
+        ContentBasedDeduplication: 'true'
+      }
+    }
+
+    const command = new CreateQueueCommand(input)
+    await this.client.send(command)
+
+    logger.info(`Created Queue: ${queueName}`)
   }
 
   private getClient (): SQSClient {

@@ -5,7 +5,7 @@ import { logger } from '@/shared/helpers/logger.helper'
 import { AwsSqsAdapter } from '../queue/aws/sqs.adapter'
 import constants from '@/shared/constants'
 
-export const consumeQueueEmitCatalog = async (message: any): Promise<void> => {
+export const consumeQueueEmitCatalog = async (): Promise<void> => {
   const catalogRepository = new CatalogRepository()
   const bucket = new AwsS3Adapter()
   const usecase = new UpdateCatalogOnS3(catalogRepository, bucket)
@@ -33,3 +33,5 @@ export const consumeQueueEmitCatalog = async (message: any): Promise<void> => {
     }
   }
 }
+
+setInterval(consumeQueueEmitCatalog, 1000)
