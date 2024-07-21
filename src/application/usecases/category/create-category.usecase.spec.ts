@@ -46,19 +46,19 @@ describe('CreateCategoryUseCase', () => {
     expect(spy).toHaveBeenCalledWith(input)
   })
 
-  test('shold call OwnerRepository.getById once and with correct values', async () => {
+  test('should call OwnerRepository.getById once and with correct values', async () => {
     await sut.execute(input)
     expect(ownerRepository.getById).toHaveBeenCalledTimes(1)
     expect(ownerRepository.getById).toHaveBeenCalledWith('anyOwnerId')
   })
 
-  test('shold throws if OwnerRepository.getById returns null', async () => {
+  test('should throws if OwnerRepository.getById returns null', async () => {
     ownerRepository.getById.mockResolvedValueOnce(null)
     const promise = sut.execute(input)
     await expect(promise).rejects.toThrowError(new InvalidParamError('ownerId'))
   })
 
-  test('shold call CategoryRepository.save once and with correct values', async () => {
+  test('should call CategoryRepository.save once and with correct values', async () => {
     await sut.execute(input)
     expect(categoryRepository.save).toHaveBeenCalledTimes(1)
     expect(categoryRepository.save).toHaveBeenCalledWith(fakeCategoryEntity)

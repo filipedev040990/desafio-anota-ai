@@ -46,7 +46,7 @@ describe('CreateOwnerUseCase', () => {
     expect(cryptographyService.encrypt).toHaveBeenCalledWith('anyPassword')
   })
 
-  test('shold call OwnerRepository.save once and with correct values', async () => {
+  test('should call OwnerRepository.save once and with correct values', async () => {
     await sut.execute(input)
     expect(repository.save).toHaveBeenCalledTimes(1)
     expect(repository.save).toHaveBeenCalledWith(fakeOwnerEntity)

@@ -1,5 +1,19 @@
-import { ProductData } from '@/domain/entities/product/product.entity'
+export type CreateProductInput = {
+  ownerId: string
+  products: Product []
+}
+
+export type Product = {
+  categoryId: string
+  items: Item []
+}
+
+export type Item = {
+  title: string
+  description: string
+  price: number
+}
 
 export interface CreateProductUseCaseInterface {
-  execute: (input: ProductData) => Promise<{ id: string }>
+  execute: (input: CreateProductInput) => Promise<void>
 }

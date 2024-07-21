@@ -1,11 +1,11 @@
 import { HttpRequest } from '@/shared/types'
 import { CreateProductController } from './create-product.controller'
 import { mock } from 'jest-mock-extended'
-import { CreateCategoryUseCaseInterface } from '@/domain/interfaces/usecases/category/create-category-usecase.interface'
 import { InvalidParamError } from '@/shared/errors'
 import { badRequest } from '@/shared/helpers/http.helper'
+import { CreateProductUseCaseInterface } from '@/domain/interfaces/usecases/product/create-product-usecase.interface'
 
-const usecase = mock<CreateCategoryUseCaseInterface>()
+const usecase = mock<CreateProductUseCaseInterface>()
 
 describe('CreateProductController', () => {
   let sut: CreateProductController
@@ -15,14 +15,17 @@ describe('CreateProductController', () => {
     sut = new CreateProductController(usecase)
     input = {
       body: {
-        categoryId: 'anyCategoryId',
         ownerId: 'anyOwnerId',
-        title: 'anyTitle',
-        description: 'anyDescription',
-        price: 5000
+        products: [{
+          categoryId: 'anyCategoryId',
+          items: [{
+            title: 'anyTitle',
+            description: 'anyDescription',
+            price: 5000
+          }]
+        }]
       }
     }
-    usecase.execute.mockResolvedValue({ id: 'anyId' })
   })
 
   test('should call CreateCategoryUsecase once and with correct values', async () => {
@@ -33,7 +36,7 @@ describe('CreateProductController', () => {
 
   test('should return a correct output', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 201, body: { id: 'anyId' } })
+    expect(output).toEqual({ statusCode: 201, body: null })
   })
 
   test('should return a correct error if CreateOwnerUseCase throws', async () => {

@@ -8,8 +8,8 @@ export class CreateProductController implements ControllerInterface {
   constructor (private readonly usecase: CreateProductUseCaseInterface) {}
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
-      const output = await this.usecase.execute(input?.body)
-      return success(201, output)
+      await this.usecase.execute(input?.body)
+      return success(201, null)
     } catch (error) {
       return handleError(error)
     }
