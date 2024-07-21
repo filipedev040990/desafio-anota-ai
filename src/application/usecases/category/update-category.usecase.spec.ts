@@ -13,7 +13,7 @@ describe('UpdateCategoryUseCase', () => {
   beforeEach(() => {
     sut = new UpdateCategoryUseCase(categoryRepository)
     input = {
-      categoryId: 'anyCategoryId',
+      id: 'anyid',
       description: 'anyDescription',
       title: 'anyTitle'
     }
@@ -25,10 +25,10 @@ describe('UpdateCategoryUseCase', () => {
     expect(categoryRepository.update).toHaveBeenCalledWith(input)
   })
 
-  test('should throw if categoryId is not provided', async () => {
-    input.categoryId = undefined as any
+  test('should throw if id is not provided', async () => {
+    input.id = undefined as any
     const promise = sut.execute(input)
-    await expect(promise).rejects.toThrowError(new MissingParamError('categoryId'))
+    await expect(promise).rejects.toThrowError(new MissingParamError('id'))
   })
 
   test('should throw if description and title are not provided', async () => {
