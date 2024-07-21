@@ -30,7 +30,7 @@ export class CategoryRepository implements CategoryRepositoryInterface {
   }
 
   async update (input: UpdateCategoryUseCaseInput): Promise<void> {
-    const { categoryId: id, description, title } = input
+    const { id, description, title } = input
     const data: { description?: string, title?: string} = {}
 
     if (description) {

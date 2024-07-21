@@ -15,9 +15,11 @@ describe('UpdateCategoryController', () => {
     sut = new UpdateCategoryController(usecase)
     input = {
       body: {
-        categoryId: 'anyCategoryId',
         description: 'anyDescription',
         title: 'anyTitle'
+      },
+      params: {
+        id: 'anyCategoryId'
       }
     }
   })

@@ -13,9 +13,9 @@ export class UpdateCategoryUseCase implements UpdateCategoryUseCaseInterface {
   }
 
   validate (input: UpdateCategoryUseCaseInput): void {
-    const { categoryId, description, title } = input
-    if (!categoryId) {
-      throw new MissingParamError('categoryId')
+    const { id, description, title } = input
+    if (!id) {
+      throw new MissingParamError('id')
     }
 
     if (!description && !title) {

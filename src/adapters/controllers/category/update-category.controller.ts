@@ -8,7 +8,11 @@ export class UpdateCategoryController implements ControllerInterface {
   constructor (private readonly usecase: UpdateCategoryUseCaseInterface) {}
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
-      await this.usecase.execute(input?.body)
+      const data = {
+        id: input?.params.id,
+        ...input?.body
+      }
+      await this.usecase.execute(data)
       return success(201, null)
     } catch (error) {
       return handleError(error)
