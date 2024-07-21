@@ -1,5 +1,6 @@
 import { CategoryRepositoryData, CategoryRepositoryInterface } from '@/domain/interfaces/repositories/category-repository.interface'
 import { prismaClient } from '../prisma-client'
+import { UpdateCategoryUseCaseInput } from '@/domain/interfaces/usecases/category/update-category-usecase.interface'
 
 export class CategoryRepository implements CategoryRepositoryInterface {
   async save (input: CategoryRepositoryData): Promise<CategoryRepositoryData> {
@@ -26,5 +27,25 @@ export class CategoryRepository implements CategoryRepositoryInterface {
   async getByOwnerId (ownerId: string): Promise<CategoryRepositoryData[] | null> {
     const categories = await prismaClient.category.findMany({ where: { ownerId } })
     return categories.length ? categories : null
+  }
+
+  async update (input: UpdateCategoryUseCaseInput): Promise<void> {
+    const { categoryId: id, description, title } = input
+    const data: { description?: string, title?: string} = {}
+
+    if (description) {
+      data.description = description
+    }
+
+    if (title) {
+      data.title = title
+    }
+
+    await prismaClient.category.update({
+      where: {
+        id
+      },
+      data
+    })
   }
 }
