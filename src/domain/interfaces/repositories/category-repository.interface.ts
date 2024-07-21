@@ -1,3 +1,5 @@
+import { UpdateCategoryUseCaseInput } from '../usecases/category/update-category-usecase.interface'
+
 export type CategoryRepositoryData = {
   id: string
   ownerId: string
@@ -12,4 +14,5 @@ export interface CategoryRepositoryInterface {
   getById: (id: string) => Promise<CategoryRepositoryData | null>
   getByIdAndOwnerId: (categoryId: string, ownerId: string) => Promise<CategoryRepositoryData | null>
   getByOwnerId: (ownerId: string) => Promise<CategoryRepositoryData [] | null>
+  update: (input: UpdateCategoryUseCaseInput) => Promise<void>
 }
