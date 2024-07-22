@@ -27,12 +27,16 @@ describe('UpdateCategoryController', () => {
   test('should call UpdateCategoryUsecase once and with correct values', async () => {
     await sut.execute(input)
     expect(usecase.execute).toHaveBeenCalledTimes(1)
-    expect(usecase.execute).toHaveBeenCalledWith(input.body)
+    expect(usecase.execute).toHaveBeenCalledWith({
+      id: 'anyCategoryId',
+      description: 'anyDescription',
+      title: 'anyTitle'
+    })
   })
 
   test('should return a correct output', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 201, body: null })
+    expect(output).toEqual({ statusCode: 204, body: null })
   })
 
   test('should return a correct error if UpdateOwnerUseCase throws', async () => {

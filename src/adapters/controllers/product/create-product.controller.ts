@@ -9,7 +9,7 @@ export class CreateProductController implements ControllerInterface {
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
       await this.usecase.execute(input?.body)
-      return success(201, null)
+      return success(204, null)
     } catch (error) {
       return handleError(error)
     }
