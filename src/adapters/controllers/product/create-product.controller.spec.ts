@@ -36,7 +36,7 @@ describe('CreateProductController', () => {
 
   test('should return a correct output', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 201, body: null })
+    expect(output).toEqual({ statusCode: 204, body: null })
   })
 
   test('should return a correct error if CreateOwnerUseCase throws', async () => {

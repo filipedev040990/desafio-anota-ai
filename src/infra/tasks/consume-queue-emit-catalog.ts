@@ -28,8 +28,9 @@ export const consumeQueueEmitCatalog = async (): Promise<void> => {
     try {
       await usecase.execute(ownerId)
       await sqs.deleteMessage(constants.QUEUE_EMIT_CATALOG, message.ReceiptHandle, message.MessageId)
-    } catch (error) {
+    } catch (error: any) {
       logger.error(error)
+      throw error
     }
   }
 }

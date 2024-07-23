@@ -15,4 +15,5 @@ export interface CategoryRepositoryInterface {
   getByIdAndOwnerId: (categoryId: string, ownerId: string) => Promise<CategoryRepositoryData | null>
   getByOwnerId: (ownerId: string) => Promise<CategoryRepositoryData [] | null>
   update: (input: UpdateCategoryUseCaseInput) => Promise<void>
+  delete: (id: string, ownerId: string) => Promise<void>
 }
