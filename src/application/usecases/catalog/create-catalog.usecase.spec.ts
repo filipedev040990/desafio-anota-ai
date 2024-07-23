@@ -164,7 +164,7 @@ describe('CreateCatalogUseCase', () => {
 
   test('should return a correct output on success', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ id: 'anyCatalogId', bucketUrl: 'https://anota-ai-catalogs.s3.undefined.amazonaws.com/anyOwnerId.json' })
+    expect(output).toEqual({ id: 'anyCatalogId' })
   })
 
   test('should call queueService.sendMessage once and with correct ownerId', async () => {

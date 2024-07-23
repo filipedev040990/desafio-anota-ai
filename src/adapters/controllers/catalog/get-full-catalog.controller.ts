@@ -9,7 +9,7 @@ export class GetCatalogByOwnerIdController implements ControllerInterface {
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
       const output = await this.usecase.execute(input?.body?.ownerId)
-      return success(201, output)
+      return success(200, output)
     } catch (error) {
       return handleError(error)
     }

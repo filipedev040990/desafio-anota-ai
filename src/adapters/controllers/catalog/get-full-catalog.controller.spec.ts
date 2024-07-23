@@ -29,7 +29,7 @@ describe('GetCatalogByOwnerIdController', () => {
 
   test('should return a correct output', async () => {
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 201, body: fakeS3Url })
+    expect(output).toEqual({ statusCode: 200, body: fakeS3Url })
   })
 
   test('should return a correct error if CreateOwnerUseCase throws', async () => {
