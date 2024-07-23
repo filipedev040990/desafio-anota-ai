@@ -1,6 +1,7 @@
 import { CatalogItemRepositoryData, CatalogRepositoryData, CatalogRepositoryInterface, FullCatalogRepositoryData } from '@/domain/interfaces/repositories/catalog-repository.interface'
 import { prismaClient } from '../prisma-client'
 import constants from '@/shared/constants'
+import { logger } from '@/shared/helpers/logger.helper'
 
 export class CatalogRepository implements CatalogRepositoryInterface {
   async save (data: CatalogRepositoryData): Promise<CatalogRepositoryData> {
@@ -71,10 +72,20 @@ export class CatalogRepository implements CatalogRepositoryInterface {
     }
   }
 
-  async getCatalogS3 (ownerId: string): Promise<string> {
+  async getCatalogS3 (ownerId: string): Promise<any> {
     const bucketName = constants.CATALOG_BUCKET_NAME
     const region = process.env.AWS_REGION
     const key = `${ownerId}.json`
-    return `https://${bucketName}.s3.${region}.amazonaws.com/${key}`
+    const uri = `https://${bucketName}.s3.${region}.amazonaws.com/${key}`
+
+    try {
+      const response = await fetch(uri)
+      if (!response.ok) {
+        throw new Error('Error get catalog in aws s3 bucket: ' + response.statusText)
+      }
+      return await response.json()
+    } catch (error) {
+      logger.error('Error:', error)
+    }
   }
 }

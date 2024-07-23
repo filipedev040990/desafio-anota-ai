@@ -27,7 +27,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
     private readonly queueService: QueueInterface
   ) {}
 
-  async execute (input: CatalogData): Promise<{ id: string, bucketUrl: string }> {
+  async execute (input: CatalogData): Promise<{ id: string }> {
     const owner = await this.handleOwner(input?.ownerId)
     const category = await this.handleCategory(input?.categoryId, input?.ownerId)
     const products = await this.handleProducts(input?.items, input?.categoryId)
@@ -35,12 +35,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
 
     await this.sendMessage(owner.id)
 
-    const bucketName = constants.CATALOG_BUCKET_NAME
-    const region = process.env.AWS_REGION
-    const key = `${owner.id}.json`
-    const bucketUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${key}`
-
-    return { id: catalogId, bucketUrl }
+    return { id: catalogId }
   }
 
   async handleOwner (ownerId: string): Promise<OwnerRepositoryData> {
