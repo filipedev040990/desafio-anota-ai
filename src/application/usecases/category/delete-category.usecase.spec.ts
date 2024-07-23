@@ -3,9 +3,11 @@ import { CategoryRepositoryInterface } from '@/domain/interfaces/repositories/ca
 import { mock } from 'jest-mock-extended'
 import { DeleteCategoryUseCase } from './delete-category.usecase'
 import { CatalogRepository } from '@/infra/database/repositories/catalog.repository'
+import { ProductRepositoryInterface } from '@/domain/interfaces/repositories/product-repository.interface'
 
 const categoryRepository = mock<CategoryRepositoryInterface>()
 const catalogRepository = mock<CatalogRepository>()
+const productRepository = mock<ProductRepositoryInterface>()
 
 const fakeCategory = {
   id: 'anyCategoryId',
@@ -23,17 +25,29 @@ const fakeCatalog = {
   createdAt: new Date()
 }
 
+const fakeProduct = [{
+  id: 'anyProductId',
+  categoryId: 'anyCategoryId',
+  ownerId: 'anyOwnerId',
+  title: 'anyTitle',
+  description: 'anyDescription',
+  price: 1500,
+  createdAt: new Date(),
+  updatedAt: null
+}]
+
 describe('DeleteCategoryUseCase', () => {
   let sut: DeleteCategoryUseCase
   let id: string
   let ownerId: string
 
   beforeEach(() => {
-    sut = new DeleteCategoryUseCase(categoryRepository, catalogRepository)
+    sut = new DeleteCategoryUseCase(categoryRepository, catalogRepository, productRepository)
     id = 'anyCategoryId'
     ownerId = 'anyOwnerId'
     categoryRepository.getByIdAndOwnerId.mockResolvedValue(fakeCategory)
     catalogRepository.getByOwnerIdAndCategoryId.mockResolvedValue(null)
+    productRepository.getByCategoryId.mockResolvedValue(null)
   })
 
   test('should throw if id is not provided', async () => {
@@ -57,7 +71,7 @@ describe('DeleteCategoryUseCase', () => {
   test('should throw if CategoryRepository.getByIdAndOwnerId returns null', async () => {
     categoryRepository.getByIdAndOwnerId.mockResolvedValueOnce(null)
     const promise = sut.execute(id, ownerId)
-    await expect(promise).rejects.toThrowError(new InvalidParamError('id or ownerId is invalid'))
+    await expect(promise).rejects.toThrowError(new InvalidParamError('id'))
   })
 
   test('should call CatalogRepository.getByOwnerIdAndCategoryId once and with correct values', async () => {
@@ -70,6 +84,18 @@ describe('DeleteCategoryUseCase', () => {
     catalogRepository.getByOwnerIdAndCategoryId.mockResolvedValueOnce(fakeCatalog)
     const promise = sut.execute(id, ownerId)
     await expect(promise).rejects.toThrowError(new InvalidParamError('This category is already in use by a catalog'))
+  })
+
+  test('should call ProductRepository.getByCategoryId once and with correct values', async () => {
+    await sut.execute(id, ownerId)
+    expect(productRepository.getByCategoryId).toHaveBeenCalledTimes(1)
+    expect(productRepository.getByCategoryId).toHaveBeenCalledWith(id)
+  })
+
+  test('should throw if ProductRepository.getByCategoryId returns a product', async () => {
+    productRepository.getByCategoryId.mockResolvedValueOnce(fakeProduct)
+    const promise = sut.execute(id, ownerId)
+    await expect(promise).rejects.toThrowError(new InvalidParamError('This category is already in use by a product'))
   })
 
   test('should call CategoryRepository.delete once and with correct values', async () => {
