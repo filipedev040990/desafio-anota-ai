@@ -1,15 +1,12 @@
 import { CatalogItemEntity } from '@/domain/entities/catalog-item/catalog-item.entity'
 import { CatalogData, CatalogEntity } from '@/domain/entities/catalog/catalog.entity'
-import { QueueInterface } from '@/domain/interfaces/queue/queue.interface'
 import { CatalogRepositoryData, CatalogRepositoryInterface } from '@/domain/interfaces/repositories/catalog-repository.interface'
 import { CategoryRepositoryData, CategoryRepositoryInterface } from '@/domain/interfaces/repositories/category-repository.interface'
 import { OwnerRepositoryData, OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { ProductRepositoryInterface } from '@/domain/interfaces/repositories/product-repository.interface'
 import { CreateCatalogUseCaseInterface } from '@/domain/interfaces/usecases/catalog/create-catalog-usecase.interface'
-import constants from '@/shared/constants'
-import { InvalidParamError, MissingParamError, ServerError } from '@/shared/errors'
-import { logger } from '@/shared/helpers/logger.helper'
-import { queueDeduplicationIdGenerate } from '@/shared/helpers/queue.helper'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import { publishUpdateCatalogMessage } from '@/shared/helpers/utils.helper'
 
 export type Item = {
   id: string
@@ -23,8 +20,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
     private readonly ownerRepository: OwnerRepositoryInterface,
     private readonly categoryRepository: CategoryRepositoryInterface,
     private readonly productRepository: ProductRepositoryInterface,
-    private readonly catalogRepository: CatalogRepositoryInterface,
-    private readonly queueService: QueueInterface
+    private readonly catalogRepository: CatalogRepositoryInterface
   ) {}
 
   async execute (input: CatalogData): Promise<{ id: string }> {
@@ -33,7 +29,7 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
     const products = await this.handleProducts(input?.items, input?.categoryId)
     const catalogId = await this.handleCatalog(owner.id, category.id, products.map(product => product.id))
 
-    await this.sendMessage(owner.id)
+    await publishUpdateCatalogMessage(owner.id)
 
     return { id: catalogId }
   }
@@ -118,18 +114,5 @@ export class CreateCatalogUseCase implements CreateCatalogUseCaseInterface {
       const catalogItem = CatalogItemEntity.build({ catalogId, productId: item })
       await this.catalogRepository.saveItems(catalogItem)
     })
-  }
-
-  async sendMessage (ownerId: string): Promise<void> {
-    const messageBody = JSON.stringify({ ownerId })
-    const queueName = constants.QUEUE_EMIT_CATALOG
-    const deduplicationId = queueDeduplicationIdGenerate()
-
-    const success = await this.queueService.sendMessage(queueName, messageBody, constants.MESSAGE_GROUP_ID, deduplicationId)
-
-    if (!success) {
-      logger.error(`Error publishing message: ${JSON.stringify(messageBody)}`)
-      throw new ServerError(new Error('Error publishing message'))
-    }
   }
 }

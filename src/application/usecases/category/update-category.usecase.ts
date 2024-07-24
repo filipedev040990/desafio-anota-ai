@@ -1,6 +1,7 @@
 import { CategoryRepositoryInterface } from '@/domain/interfaces/repositories/category-repository.interface'
 import { UpdateCategoryUseCaseInput, UpdateCategoryUseCaseInterface } from '@/domain/interfaces/usecases/category/update-category-usecase.interface'
-import { MissingParamError } from '@/shared/errors'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import { publishUpdateCatalogMessage } from '@/shared/helpers/utils.helper'
 
 export class UpdateCategoryUseCase implements UpdateCategoryUseCaseInterface {
   constructor (
@@ -8,14 +9,21 @@ export class UpdateCategoryUseCase implements UpdateCategoryUseCaseInterface {
   ) {}
 
   async execute (input: UpdateCategoryUseCaseInput): Promise<void> {
-    this.validate(input)
+    await this.validate(input)
     await this.categoryRepository.update(input)
+    await publishUpdateCatalogMessage(input.ownerId)
   }
 
-  validate (input: UpdateCategoryUseCaseInput): void {
-    const { id, description, title } = input
+  async validate (input: UpdateCategoryUseCaseInput): Promise<void> {
+    const { id, ownerId, description, title } = input
     if (!id) {
       throw new MissingParamError('id')
+    }
+
+    const category = await this.categoryRepository.getByIdAndOwnerId(id, ownerId)
+
+    if (!category) {
+      throw new InvalidParamError('id')
     }
 
     if (!description && !title) {

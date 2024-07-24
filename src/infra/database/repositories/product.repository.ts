@@ -1,4 +1,4 @@
-import { ProductRepositoryData, ProductRepositoryInterface } from '@/domain/interfaces/repositories/product-repository.interface'
+import { ProductRepositoryData, ProductRepositoryInterface, UpdateProductRepositoryData } from '@/domain/interfaces/repositories/product-repository.interface'
 import { prismaClient } from '../prisma-client'
 
 export class ProductRepository implements ProductRepositoryInterface {
@@ -30,5 +30,10 @@ export class ProductRepository implements ProductRepositoryInterface {
 
   async getByCategoryId (categoryId: string): Promise<ProductRepositoryData [] | null> {
     return await prismaClient.product.findMany({ where: { categoryId } })
+  }
+
+  async update (input: UpdateProductRepositoryData): Promise<void> {
+    const { id, ownerId, ...data } = input
+    await prismaClient.product.update({ where: { id }, data })
   }
 }

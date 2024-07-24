@@ -1,5 +1,6 @@
 export type UpdateCategoryUseCaseInput = {
   id: string
+  ownerId: string
   title?: string
   description?: string
 }

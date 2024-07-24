@@ -9,6 +9,10 @@ import { QueueInterface } from '@/domain/interfaces/queue/queue.interface'
 import * as queueHelper from '@/shared/helpers/queue.helper'
 import { mock } from 'jest-mock-extended'
 
+jest.mock('@/shared/helpers/utils.helper', () => ({
+  publishUpdateCatalogMessage: jest.fn()
+}))
+
 const ownerRepository = mock<OwnerRepositoryInterface>()
 const categoryRepository = mock<CategoryRepositoryInterface>()
 const productRepository = mock<ProductRepositoryInterface>()
@@ -63,7 +67,7 @@ describe('CreateCatalogUseCase', () => {
   let input: CatalogData
 
   beforeEach(() => {
-    sut = new CreateCatalogUseCase(ownerRepository, categoryRepository, productRepository, catalogRepository, queueService)
+    sut = new CreateCatalogUseCase(ownerRepository, categoryRepository, productRepository, catalogRepository)
     input = {
       ownerId: 'anyOwnerId',
       categoryId: 'anyCategoryId',
@@ -165,11 +169,5 @@ describe('CreateCatalogUseCase', () => {
   test('should return a correct output on success', async () => {
     const output = await sut.execute(input)
     expect(output).toEqual({ id: 'anyCatalogId' })
-  })
-
-  test('should call queueService.sendMessage once and with correct ownerId', async () => {
-    await sut.execute(input)
-    expect(queueService.sendMessage).toHaveBeenCalledTimes(1)
-    expect(queueService.sendMessage).toHaveBeenCalledWith('emit_catalog.fifo', '{"ownerId":"anyOwnerId"}', 'emit_catalog', 'anyDeduplicationId')
   })
 })
