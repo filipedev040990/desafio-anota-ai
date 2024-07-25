@@ -36,4 +36,14 @@ export class ProductRepository implements ProductRepositoryInterface {
     const { id, ownerId, ...data } = input
     await prismaClient.product.update({ where: { id }, data })
   }
+
+  async getAll (ownerId: string): Promise<ProductRepositoryData [] | null> {
+    const products = await prismaClient.product.findMany({ where: { ownerId } })
+
+    if (!products || !products.length) {
+      return null
+    }
+
+    return products
+  }
 }
