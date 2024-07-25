@@ -25,6 +25,7 @@ export interface ProductRepositoryInterface {
   save: (input: ProductRepositoryData) => Promise<ProductRepositoryData>
   update: (input: UpdateProductRepositoryData) => Promise<void>
   getById: (id: string) => Promise<ProductRepositoryData | null>
+  getByIdAndOwnerId: (productId: string, ownerId: string) => Promise<ProductRepositoryData | null>
   getAll: (ownerId: string) => Promise<ListProductOutput [] | null>
   getByIdAndCategoryId: (id: string, categoryId: string) => Promise<ProductRepositoryData | null>
   getByCategoryId: (categoryId: string) => Promise<ProductRepositoryData [] | null>
