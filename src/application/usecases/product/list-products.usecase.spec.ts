@@ -1,8 +1,9 @@
 import { OwnerRepositoryInterface } from '@/domain/interfaces/repositories/owner-repository.interface'
 import { InvalidParamError } from '@/shared/errors'
-import { ProductRepositoryData, ProductRepositoryInterface } from '@/domain/interfaces/repositories/product-repository.interface'
+import { ProductRepositoryInterface } from '@/domain/interfaces/repositories/product-repository.interface'
 import { mock } from 'jest-mock-extended'
 import { ListAllProductsUseCase } from './list-products.usecase'
+import { ListProductOutput } from '@/domain/interfaces/usecases/product/list-all-products-usecase.interface'
 
 const ownerRepository = mock<OwnerRepositoryInterface>()
 const productRepository = mock<ProductRepositoryInterface>()
@@ -14,19 +15,15 @@ const fakeOwner = {
   createdAt: new Date(),
   updatedAt: null
 }
-const fakeProducts: ProductRepositoryData [] | null = [{
-  id: 'anyId',
-  categoryId: 'anyCategoryId',
-  ownerId: 'anyOwnerId',
+const fakeProducts: ListProductOutput [] | null = [{
+  category: 'anyCategory',
   title: 'anyTitle',
   description: 'anyDescription',
   price: 1000,
   createdAt: new Date(),
   updatedAt: null
 }, {
-  id: 'another',
-  categoryId: 'anotherCategoryId',
-  ownerId: 'anyOwnerId',
+  category: 'anotherCategory',
   title: 'anotherTitle',
   description: 'anotherDescription',
   price: 1500,

@@ -1,25 +1,20 @@
 import { HttpRequest } from '@/shared/types'
 import { InvalidParamError } from '@/shared/errors'
 import { badRequest } from '@/shared/helpers/http.helper'
-import { ListAllProductsUseCaseInterface } from '@/domain/interfaces/usecases/product/list-all-products-usecase.interface'
+import { ListAllProductsUseCaseInterface, ListProductOutput } from '@/domain/interfaces/usecases/product/list-all-products-usecase.interface'
 import { ListAllProductsController } from './list-all-products.controller'
-import { ProductRepositoryData } from '@/domain/interfaces/repositories/product-repository.interface'
 import { mock } from 'jest-mock-extended'
 
 const usecase = mock<ListAllProductsUseCaseInterface>()
-const fakeProducts: ProductRepositoryData [] | null = [{
-  id: 'anyId',
-  categoryId: 'anyCategoryId',
-  ownerId: 'anyOwnerId',
+const fakeProducts: ListProductOutput [] | null = [{
+  category: 'anyCategoryId',
   title: 'anyTitle',
   description: 'anyDescription',
   price: 1000,
   createdAt: new Date(),
   updatedAt: null
 }, {
-  id: 'another',
-  categoryId: 'anotherCategoryId',
-  ownerId: 'anyOwnerId',
+  category: 'anotherCategoryId',
   title: 'anotherTitle',
   description: 'anotherDescription',
   price: 1500,
