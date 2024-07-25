@@ -26,7 +26,7 @@ describe('UpdateProductController', () => {
     }
   })
 
-  test('should call UpdateCategoryUsecase once and with correct values', async () => {
+  test('should call UpdateProductUsecase once and with correct values', async () => {
     await sut.execute(input)
     expect(usecase.execute).toHaveBeenCalledTimes(1)
     expect(usecase.execute).toHaveBeenCalledWith({
@@ -43,7 +43,7 @@ describe('UpdateProductController', () => {
     expect(output).toEqual({ statusCode: 204, body: null })
   })
 
-  test('should return a correct error if UpdateOwnerUseCase throws', async () => {
+  test('should return a correct error if UpdateProductUseCase throws', async () => {
     const error = new InvalidParamError('anyParam')
     usecase.execute.mockImplementationOnce(() => {
       throw error
