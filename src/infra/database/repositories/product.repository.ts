@@ -41,6 +41,7 @@ export class ProductRepository implements ProductRepositoryInterface {
   async getAll (ownerId: string): Promise<ListProductOutput [] | null> {
     const products = await prismaClient.product.findMany({
       select: {
+        id: true,
         title: true,
         description: true,
         price: true,
@@ -60,6 +61,7 @@ export class ProductRepository implements ProductRepositoryInterface {
     }
 
     const output: ListProductOutput [] = products.map((product) => ({
+      id: product.id,
       category: product.Category.title,
       title: product.title,
       description: product.description,

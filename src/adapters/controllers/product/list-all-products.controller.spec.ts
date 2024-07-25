@@ -7,6 +7,7 @@ import { mock } from 'jest-mock-extended'
 
 const usecase = mock<ListAllProductsUseCaseInterface>()
 const fakeProducts: ListProductOutput [] | null = [{
+  id: 'anyProductId',
   category: 'anyCategoryId',
   title: 'anyTitle',
   description: 'anyDescription',
@@ -14,6 +15,7 @@ const fakeProducts: ListProductOutput [] | null = [{
   createdAt: new Date(),
   updatedAt: null
 }, {
+  id: 'anotherProductId',
   category: 'anotherCategoryId',
   title: 'anotherTitle',
   description: 'anotherDescription',

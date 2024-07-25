@@ -16,6 +16,7 @@ const fakeOwner = {
   updatedAt: null
 }
 const fakeProducts: ListProductOutput [] | null = [{
+  id: 'anyProductId',
   category: 'anyCategory',
   title: 'anyTitle',
   description: 'anyDescription',
@@ -23,6 +24,7 @@ const fakeProducts: ListProductOutput [] | null = [{
   createdAt: new Date(),
   updatedAt: null
 }, {
+  id: 'anotherProductId',
   category: 'anotherCategory',
   title: 'anotherTitle',
   description: 'anotherDescription',
