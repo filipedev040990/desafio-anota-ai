@@ -70,4 +70,8 @@ export class ProductRepository implements ProductRepositoryInterface {
 
     return output
   }
+
+  async getByIdAndOwnerId (productId: string, ownerId: string): Promise<ProductRepositoryData | null> {
+    return await prismaClient.product.findFirst({ where: { id: productId, ownerId } })
+  }
 }
