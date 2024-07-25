@@ -5,6 +5,7 @@ import { makeCreateOwnerControllerFactory } from './factories/controllers/create
 import { makeCreateProductControllerFactory } from './factories/controllers/create-product-controller.factory'
 import { makeDeleteCategoryControllerFactory } from './factories/controllers/delete-category-controller.factory'
 import { makeGetCatalogByOwnerIdControllerFactory } from './factories/controllers/get-catalog-by-ownerId-controller.factory'
+import { makeListAllProductsControllerFactory } from './factories/controllers/list-all-products-controller.factory'
 import { makeListCategoryControllerFactory } from './factories/controllers/list-category-controller.factory'
 import { makeUpdateCategoryControllerFactory } from './factories/controllers/update-category-controller.factory'
 import { makeUpdateOwnerControllerFactory } from './factories/controllers/update-owner-controller.factory'
@@ -31,6 +32,7 @@ router.get('/category', expressAdapterMiddleware(makeAuthenticationMiddlewareFac
 // Product
 router.put('/product/:id', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeUpdateProductControllerFactory()))
 router.post('/product', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeCreateProductControllerFactory()))
+router.get('/product', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeListAllProductsControllerFactory()))
 
 router.post('/catalog', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeCreateCatalogControllerFactory()))
 router.get('/full_catalog', expressAdapterMiddleware(makeAuthenticationMiddlewareFactory()), expressRouteAdapter(makeGetCatalogByOwnerIdControllerFactory()))
