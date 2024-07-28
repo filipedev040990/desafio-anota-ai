@@ -76,4 +76,8 @@ export class ProductRepository implements ProductRepositoryInterface {
   async getByIdAndOwnerId (productId: string, ownerId: string): Promise<ProductRepositoryData | null> {
     return await prismaClient.product.findFirst({ where: { id: productId, ownerId } })
   }
+
+  async delete (id: string, ownerId: string): Promise<void> {
+    await prismaClient.product.delete({ where: { id, ownerId } })
+  }
 }

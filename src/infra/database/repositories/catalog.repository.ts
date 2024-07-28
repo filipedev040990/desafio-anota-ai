@@ -91,6 +91,10 @@ export class CatalogRepository implements CatalogRepositoryInterface {
 
   async getCatalogItemByProductId (productId: string): Promise<CatalogItemRepositoryData [] | null> {
     const catalogItem = await prismaClient.catalogItem.findMany({ where: { productId } })
-    return catalogItem ?? null
+
+    if (!catalogItem || !catalogItem.length) {
+      return null
+    }
+    return catalogItem
   }
 }
