@@ -81,3 +81,17 @@ model CatalogItem {
 
   @@map("catalog_items")
 }
+
+model Request {
+  id        String   @id
+  ownerId   String
+  method    String
+  route     String
+  input     String   @db.Text
+  output    String   @db.Text
+  status    Int
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@map("requests")
+}
