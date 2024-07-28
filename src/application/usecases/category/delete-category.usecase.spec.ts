@@ -1,9 +1,9 @@
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { CategoryRepositoryInterface } from '@/domain/interfaces/repositories/category-repository.interface'
-import { mock } from 'jest-mock-extended'
 import { DeleteCategoryUseCase } from './delete-category.usecase'
 import { CatalogRepository } from '@/infra/database/repositories/catalog.repository'
 import { ProductRepositoryInterface } from '@/domain/interfaces/repositories/product-repository.interface'
+import { mock } from 'jest-mock-extended'
 
 const categoryRepository = mock<CategoryRepositoryInterface>()
 const catalogRepository = mock<CatalogRepository>()

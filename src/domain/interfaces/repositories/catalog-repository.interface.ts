@@ -37,4 +37,5 @@ export interface CatalogRepositoryInterface {
   getByOwnerIdAndCategoryId: (ownerId: string, categoryId: string) => Promise <CatalogRepositoryData | null>
   getFullCatalog: (ownerId: string) => Promise<FullCatalogRepositoryData | null>
   getCatalogS3: (ownerId: string) => Promise<string>
+  getCatalogItemByProductId: (productId: string) => Promise<CatalogItemRepositoryData [] | null>
 }

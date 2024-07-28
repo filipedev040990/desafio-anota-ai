@@ -30,4 +30,5 @@ export interface ProductRepositoryInterface {
   getByIdAndCategoryId: (id: string, categoryId: string) => Promise<ProductRepositoryData | null>
   getByCategoryId: (categoryId: string) => Promise<ProductRepositoryData [] | null>
   getByAllFields: (categoryId: string, ownerId: string, title: string, description: string, price: number) => Promise<ProductRepositoryData | null>
+  delete: (id: string, ownerId: string) => Promise<void>
 }

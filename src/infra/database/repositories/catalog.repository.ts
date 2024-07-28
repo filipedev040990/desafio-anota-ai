@@ -88,4 +88,9 @@ export class CatalogRepository implements CatalogRepositoryInterface {
       logger.error('Error:', error)
     }
   }
+
+  async getCatalogItemByProductId (productId: string): Promise<CatalogItemRepositoryData [] | null> {
+    const catalogItem = await prismaClient.catalogItem.findMany({ where: { productId } })
+    return catalogItem ?? null
+  }
 }
