@@ -18,6 +18,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
+      - name: List files
+        run: ls -alh
+
       - name: Copy files via SSH
         run: |
           scp -o StrictHostKeyChecking=no -r ./ ec2-user@54.221.42.164:/home/ec2-user/projects/desafio-anota-ai
