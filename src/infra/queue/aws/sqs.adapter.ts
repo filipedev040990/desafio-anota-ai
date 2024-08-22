@@ -1,7 +1,7 @@
 import { SendMessageRequest, SQSClient, SendMessageCommand, ReceiveMessageCommand, ReceiveMessageRequest, DeleteMessageRequest, DeleteMessageCommand, CreateQueueRequest, CreateQueueCommand } from '@aws-sdk/client-sqs'
 import { logger } from '@/shared/helpers/logger.helper'
 import { QueueInterface } from '@/domain/interfaces/queue/queue.interface'
-import { CreateBucketCommand, CreateBucketRequest, DeletePublicAccessBlockCommand, PutBucketPolicyCommand, PutPublicAccessBlockCommand, S3Client } from '@aws-sdk/client-s3'
+import { CreateBucketCommand, CreateBucketRequest, PutPublicAccessBlockCommand, S3Client } from '@aws-sdk/client-s3'
 
 export class AwsSqsAdapter implements QueueInterface {
   private readonly sqsClient: SQSClient
