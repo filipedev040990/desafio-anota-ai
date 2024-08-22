@@ -23,7 +23,7 @@ jobs:
 
       - name: Copy files via SSH
         run: |
-          scp -o StrictHostKeyChecking=no -r ./ ec2-user@54.221.42.164:/home/ec2-user/projects/desafio-anota-ai
+          run: scp -o StrictHostKeyChecking=no -r . ec2-user@54.221.42.164:/home/ec2-user/projects/desafio-anota-ai
 
       - name: Install dependencies and restart app
         run: |
